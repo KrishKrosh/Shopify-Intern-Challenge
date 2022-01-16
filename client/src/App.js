@@ -1,5 +1,10 @@
-import * as React from "react";
+import React, { useState, useEffect } from "react";
+
 import { DataGrid } from "@material-ui/data-grid";
+import socketIOClient from "socket.io-client";
+
+const ENDPOINT = "http://127.0.0.1:4001";
+const socket = socketIOClient(ENDPOINT, { transports: ["websocket"] });
 
 const columns = [
   { field: "id", headerName: "ID", width: 200 },
@@ -52,7 +57,23 @@ function DataTable() {
 }
 
 function App() {
-  return <div>{DataTable()}</div>;
+  const [response, setResponse] = useState("");
+
+  useEffect(() => {
+    socket.on("FromAPI", (data) => {
+      setResponse(data);
+    });
+  }, []);
+
+  return (
+    <div>
+      {" "}
+      <p>
+        It's <time dateTime={response}>{response}</time>
+      </p>
+      {DataTable()}
+    </div>
+  );
 }
 
 export default App;
