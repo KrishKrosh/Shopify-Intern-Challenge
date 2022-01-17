@@ -1,40 +1,24 @@
+//to set up the server
 const express = require("express");
 const http = require("http");
-const socketIo = require("socket.io");
-
-const port = process.env.PORT || 4001;
-const index = require("./routes/index");
-
 const app = express();
-app.use(index);
-
+const inventoryRoutes = require("./routes/inventoryRoutes");
+app.use(inventoryRoutes);
 const server = http.createServer(app);
+const port = process.env.PORT || 4001;
 
-const io = socketIo(server, {
-  //   cors: {
-  //     origin: "http://127.0.0.1:4001",
-  //     methods: ["GET", "POST"],
-  //   },
+//to set up socket io websocket for realtime updates
+const { socketConnection } = require("./utils/socket-io");
+socketConnection(server);
+const { inventoryUpdated } = require("./utils/socket-io");
+
+//to set up firebase
+const { firebaseAdminApp } = require("../utils/firebase");
+const firestore = firebaseAdminApp.firestore();
+
+//calls socket.io to emit when the inventory has been updated
+firestore.collection("inventory").onSnapshot((snapshot) => {
+  inventoryUpdated();
 });
-
-let interval;
-
-io.on("connection", (socket) => {
-  console.log("New client connected");
-  if (interval) {
-    clearInterval(interval);
-  }
-  interval = setInterval(() => getApiAndEmit(socket), 1000);
-  socket.on("disconnect", () => {
-    console.log("Client disconnected");
-    clearInterval(interval);
-  });
-});
-
-const getApiAndEmit = (socket) => {
-  const response = new Date();
-  // Emitting a new message. Will be consumed by the client
-  socket.emit("FromAPI", response);
-};
 
 server.listen(port, () => console.log(`Listening on port ${port}`));

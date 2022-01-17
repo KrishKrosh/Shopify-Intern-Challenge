@@ -10,7 +10,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "dotenv": "^13.0.1",
     "express": "^4.17.2",
+    "firebase-admin": "^10.0.1",
     "socket.io": "^4.4.1"
   }
 }
