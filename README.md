@@ -6,7 +6,7 @@ Hey! My name is Krish and I'm a Software Engineering student at the University o
 Demo video:
 Deployed project url:
 
-##Intro
+## Intro
 Frontend: ReactJS
 Backend: Node.js, Firebase, socket.io
 
