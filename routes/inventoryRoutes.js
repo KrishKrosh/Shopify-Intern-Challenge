@@ -3,10 +3,11 @@ const admin = require("firebase-admin");
 const { firebaseAdminApp } = require("../utils/firebase");
 const router = express.Router();
 const firestore = firebaseAdminApp.firestore();
-router.get("/", (req, res) => {
-  return res.send({ response: "I am alive" }).status(200);
-});
 const { handleData } = require("../helpers/reportData");
+
+router.get("/", (req, res) => {
+  res.sendFile(path.resolve("client/build", "index.html"));
+});
 
 //NOTE: REPORT GENERATION ROUTE IS AT THE BOTTOM OF THIS FILE
 //each item will have the following properties:
