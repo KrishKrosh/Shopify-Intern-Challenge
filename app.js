@@ -1,4 +1,5 @@
 //to set up the server
+const path = require("path");
 const express = require("express");
 const http = require("http");
 const app = express();
@@ -6,7 +7,7 @@ const inventoryRoutes = require("./routes/inventoryRoutes");
 app.use(express.json());
 app.use(inventoryRoutes);
 // Have Node serve the files for our built React app
-app.use(express.static(path.resolve(__dirname, "./client/build")));
+app.use(express.static(path.resolve("client/build")));
 const server = http.createServer(app);
 const port = process.env.PORT || 4001;
 
