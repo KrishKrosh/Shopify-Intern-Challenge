@@ -4,9 +4,10 @@ const { firebaseAdminApp } = require("../utils/firebase");
 const router = express.Router();
 const firestore = firebaseAdminApp.firestore();
 const { handleData } = require("../helpers/reportData");
+const path = require("path");
 
 router.get("/", (req, res) => {
-  res.sendFile(path.resolve("client/build", "index.html"));
+  res.sendFile(path.resolve("client", "build", "index.html"));
 });
 
 //NOTE: REPORT GENERATION ROUTE IS AT THE BOTTOM OF THIS FILE
